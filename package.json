@@ -1,13 +1,17 @@
 {
   "name": "playwrightrdproject",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "mcp": "playwright-mcp"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@playwright/mcp": "^0.0.29",
     "@playwright/test": "^1.53.0",
     "@types/node": "^24.0.1"
   }

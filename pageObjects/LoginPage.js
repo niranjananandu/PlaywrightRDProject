@@ -1,30 +1,27 @@
-import { page } from '@playwright/test';
+// pageObjects/LoginPage.js
+// Page Object for Login Page
+import { expect } from '@playwright/test';
 
 class LoginPage {
+  /**
+   * @param {import('@playwright/test').Page} page
+   */
+  constructor(page) {
+    this.page = page;
+    this.emailInput = page.getByRole('textbox', { name: 'Email address' });
+    this.passwordInput = page.getByRole('textbox', { name: 'Password' });
+    this.continueButton = page.getByRole('button', { name: 'Continue', exact: true });
+  }
 
-    constructor(page) {
-        this.page = page;
-        this.emailInput = page.getByLabel('Email');
-        this.passwordInput = page.getByLabel('Password');
-        this.continueButton = page.getByRole('button', { name: 'Continue', exact: true });
-        this.logo = page.getByRole('img', { name: 'Logo' });
-    }
+  async goto() {
+    await this.page.goto('https://k2f-syd-tst-rd-cdne-spa.azureedge.net/');
+  }
 
-
-    async login(username, password) {
-        await this.emailInput.fill(username);
-        await this.passwordInput.fill(password);
-        await this.continueButton.click();
-    }
-    async isLogoVisible() {
-
-        try {
-            await this.logo.waitFor({ state: 'visible', timeout: 10000 });
-        } catch (error) {
-            return false
-        }
-        return true;
-    }
+  async login(email, password) {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(password);
+    await this.continueButton.click();
+  }
 }
 
-export default LoginPage;
+export { LoginPage };

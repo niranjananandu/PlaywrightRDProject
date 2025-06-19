@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Mr",
+    "firstName": "Playwright",
+    "lastName": "TestUser",
+    "email": "playwright.testuser@example.com",
+    "role": "Workflow"
+  },
+  {
+    "title": "Ms",
+    "firstName": "Automation",
+    "lastName": "User",
+    "email": "automation.user@example.com",
+    "role": "System User"
+  }
+]
