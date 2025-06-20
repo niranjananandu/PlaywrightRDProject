@@ -72,6 +72,14 @@ class UsersPage {
     await this.searchInput.fill(username);  
   }
 
+  async fillUserForm(user) {
+    await this.fillTitle(user.title);
+    await this.fillFirstName(user.firstName);
+    await this.fillLastName(user.lastName);
+    await this.fillEmail(user.email);
+    await this.selectSystemRole(user.role);
+  }
+
   async isUserInGrid(username) {
     this.setUserInGridName(username);
     const cell = await this.page.waitForSelector(this.userInGridName);
