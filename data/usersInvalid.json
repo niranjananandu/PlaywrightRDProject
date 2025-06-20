@@ -1,0 +1,42 @@
+[
+  {
+    "testName": "Missing Title",
+    "title": "",
+    "firstName": "Playwright",
+    "lastName": "TestUser",
+    "email": "playwright.testuser@example.com",
+    "role": "Workflow"
+  },
+  {
+    "testName": "Missing First Name",
+    "title": "Ms",
+    "firstName": "",
+    "lastName": "User",
+    "email": "automation.user@example.com",
+    "role": "System User"
+  },
+   {
+    "testName": "Missing Last Name",
+    "title": "Ms",
+    "firstName": "Automation",
+    "lastName": "",
+    "email": "automation.user@example.com",
+    "role": "System User"
+  },
+   {
+    "testName": "Missing email",
+    "title": "Ms",
+    "firstName": "Automation",
+    "lastName": "User",
+    "email": "",
+    "role": "System User"
+  },
+   {
+    "testName": "Missing role",
+    "title": "Ms",
+    "firstName": "Automation",
+    "lastName": "User",
+    "email": "automation.user@example.com",
+    "role": ""
+  }
+]
