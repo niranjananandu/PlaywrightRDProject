@@ -44,6 +44,7 @@ test.describe.parallel('User Management - Add User', () => {
       }, 60000
     );
   }
+  
   );
 
   test.afterEach(async ({ page }, testInfo) => {
@@ -52,4 +53,11 @@ test.describe.parallel('User Management - Add User', () => {
     }
   });
 
+  /**TO DO
+   * Add credentials to environment variables
+   * Add more tests and helper methods
+   * Setup different projects and environments/profiles
+   * Make the data re-usable by making them dynamic - faker library
+   * Explore using fixtures for common setup 
+   * */
 });
