@@ -1,13 +1,23 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
-
+import fs from 'fs';
+import dotenv from 'dotenv';
+import path from 'path';
+import '@dotenvx/dotenvx/config'
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+const ENV = process.env.ENV || 'test'; // Default to 'test' if ENV is not set
+const envFilePath = `.env.${ENV}`;
+
+if (fs.existsSync(envFilePath)) {
+  console.log(`✅ Loading environment: ${ENV}`);
+  dotenv.config({ path: envFilePath });
+} else {
+  throw new Error(`❌ Environment file not found: ${envFilePath}`);
+}
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -27,6 +37,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     experimentalMcp: true,
+    "baseURL": process.env.TEST_URL,
     launchOptions: {
       args: ["--start-maximized"]
     },

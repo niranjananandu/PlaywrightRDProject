@@ -2,20 +2,20 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pageObjects/LoginPage.js';
 import { UsersPage } from '../pageObjects/UsersPage.js';
-import { getUsers } from '../data/userData.js';
+import { readJSON } from '../utils/readJSONData.js';
 import { takeTimestampedScreenshot } from '../utils/screenshotHelper';
 
-const users = getUsers('./data/users.json');
+const users = readJSON('./data/AddValidUsers.json');
 var loginPage;
 var usersPage;
-const invalidUsers = getUsers('./data/usersInvalid.json');
+const invalidUsers = readJSON('./data/AddInvalidUsers.json');
 
 test.describe.parallel('User Management - Add User', () => {
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
     usersPage = new UsersPage(page);
-    await loginPage.goto();
-    await loginPage.login('test_automation@k2fly.com', 'A4fd63ddf?ds');
+    await page.goto(process.env.TEST_URL);
+    await loginPage.login(process.env.TEST_USERNAME, process.env.TEST_PASSWORD);
     await page.waitForURL('**/users');
   });
 
@@ -43,8 +43,7 @@ test.describe.parallel('User Management - Add User', () => {
         await expect(usersPage.saveChangesButton).not.toBeEnabled();
       }, 60000
     );
-  }
-  
+  }  
   );
 
   test.afterEach(async ({ page }, testInfo) => {
@@ -54,7 +53,7 @@ test.describe.parallel('User Management - Add User', () => {
   });
 
   /**TO DO
-   * Add credentials to environment variables
+   * Add credentials to environment variables -- DONE
    * Add more tests and helper methods
    * Setup different projects and environments/profiles
    * Make the data re-usable by making them dynamic - faker library

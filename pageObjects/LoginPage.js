@@ -12,11 +12,6 @@ class LoginPage {
     this.passwordInput = page.getByRole('textbox', { name: 'Password' });
     this.continueButton = page.getByRole('button', { name: 'Continue', exact: true });
   }
-
-  async goto() {
-    await this.page.goto('https://k2f-syd-tst-rd-cdne-spa.azureedge.net/');
-  }
-
   async login(email, password) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);

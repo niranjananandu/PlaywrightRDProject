@@ -1,0 +1,17 @@
+[
+  {
+    "testName": "Blank Password",
+    "email": "test_automation@k2fly.com",
+    "password": ""
+  },
+  {
+    "testName": "Blank Username",
+    "email": "",
+    "password": "valid_password"
+  },
+  {
+    "testName": "Invalid password",
+    "email": "test_automation@k2fly.com",
+    "password": "test123!"
+  }
+]

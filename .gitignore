@@ -7,3 +7,8 @@ node_modules/
 /playwright/.cache/
 /testContext/
 /screenshots/
+.env.*
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
