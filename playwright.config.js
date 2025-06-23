@@ -3,7 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import path from 'path';
-import '@dotenvx/dotenvx/config'
+
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -11,6 +12,7 @@ import '@dotenvx/dotenvx/config'
 
 const ENV = process.env.ENV || 'test'; // Default to 'test' if ENV is not set
 const envFilePath = `.env.${ENV}`;
+// console.log("DOT ENV KEY: "+ process.env.DOTENV_KEY);
 
 if (fs.existsSync(envFilePath)) {
   console.log(`✅ Loading environment: ${ENV}`);

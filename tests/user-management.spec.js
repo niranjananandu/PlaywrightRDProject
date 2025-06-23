@@ -58,5 +58,7 @@ test.describe.parallel('User Management - Add User', () => {
    * Setup different projects and environments/profiles
    * Make the data re-usable by making them dynamic - faker library
    * Explore using fixtures for common setup 
+   * Figure out how to encrypt sensitive data like passwords -- Tried using dotnet-vault but can only configure it for one environment at a time on the free version. 
+   * Will rather try using crypto-js and dotenv to encrypt and decrypt sensitive data.   * 
    * */
 });
