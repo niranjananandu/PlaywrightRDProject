@@ -7,7 +7,8 @@
     "mcp": "playwright-mcp",
     "env:test": "cross-env ENV=test npx playwright test",
     "env:dev": "cross-env ENV=dev npx playwright test",
-    "encrypt:test": "cross-env dotenvx encrypt"
+    "encrypt:test": "cross-env dotenvx encrypt",
+    "env:test-js": "cross-env ENV=test"
   },
   "keywords": [],
   "author": "",
@@ -15,12 +16,14 @@
   "description": "",
   "devDependencies": {
     "@dotenvx/dotenvx": "^1.45.1",
+    "@faker-js/faker": "^9.8.0",
     "@playwright/mcp": "^0.0.29",
     "@playwright/test": "^1.53.0",
     "@types/node": "^24.0.1",
     "cross-env": "^7.0.3"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.5.0",
     "dotenv-vault": "^1.26.2"
   }

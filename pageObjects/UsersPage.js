@@ -1,11 +1,14 @@
-import { expect } from '@playwright/test';
+import { HelperBase } from './HelperBase';
 
-class UsersPage {
+class UsersPage extends HelperBase {
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
-    this.page = page;
+    super(page);
+    if (!page) {  
+      throw new Error('Page object is not initialized');
+    }
     this.logo = page.getByRole('img', { name: 'Logo' });
     this.addUserButton = page.getByRole('button', { name: 'Add User' });
     this.saveChangesButton = page.getByRole('button', { name: 'Save Changes' });
@@ -15,19 +18,18 @@ class UsersPage {
     this.lastNameInput = page.getByLabel('Last Name');
     this.emailInput = page.getByLabel('Email');
     this.systemRole = page.locator('div[data-testid="user-role-id-field"]');
-    this.systemRoleField = null;
-    this.userInGridName =  null;
     this.toastMessage = page.getByText('Your data has been successfully saved');
     this.menu = page.locator('#menu-')
   }
 
-  setsystemRoleField(text) {
-    this.systemRoleField = this.page.locator(`li[role="option"]:has-text("${text}")`);
-  }
+   getSystemRoleField(text) {
+  return this.page.locator(`li[role="option"]:has-text("${text}")`);
+}
 
-  setUserInGridName(text) {
+  getUserInGridName(text) {
     this.userInGridName = `tbody[data-testid="common-table-body"] tr:first-child td:nth-child(5):has-text("${text}")`;
-  }
+    return this.userInGridName;
+  } 
 
   async clickAddUserButton() {
     await this.addUserButton.click();
@@ -50,10 +52,10 @@ class UsersPage {
     }
 
     async selectSystemRole(role) {
-        this.setsystemRoleField(role)
+        // this.setSystemRoleField(role)
         await this.systemRole.click();
         try{
-                 await this.systemRoleField.click();
+                 await this.getSystemRoleField(role).click();
         } catch (error) {
             await this.menu.click();          
         }
@@ -81,11 +83,11 @@ class UsersPage {
   }
 
   async isUserInGrid(username) {
-    this.setUserInGridName(username);
-    const cell = await this.page.waitForSelector(this.userInGridName);
+    const userInGridName = this.getUserInGridName(username);
+    const cell = await this.page.waitForSelector(userInGridName);
     const cellText = await cell.textContent();
-    expect(cellText.trim()).toBe(username);
-  }
+    return cellText.trim();
+ }
 
 
 }

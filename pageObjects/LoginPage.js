@@ -1,13 +1,14 @@
-// pageObjects/LoginPage.js
-// Page Object for Login Page
-import { expect } from '@playwright/test';
+import { HelperBase } from './HelperBase';
 
-class LoginPage {
+class LoginPage extends HelperBase{
   /**
    * @param {import('@playwright/test').Page} page
    */
   constructor(page) {
-    this.page = page;
+    super(page);
+    if (!page) {  
+      throw new Error('Page object is not initialized');
+    }
     this.emailInput = page.getByRole('textbox', { name: 'Email address' });
     this.passwordInput = page.getByRole('textbox', { name: 'Password' });
     this.continueButton = page.getByRole('button', { name: 'Continue', exact: true });
