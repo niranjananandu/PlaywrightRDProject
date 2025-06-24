@@ -10,4 +10,4 @@ node_modules/
 .flaskenv*
 !.env.project
 !.env.vault
-/tests/toDo.js
+toDo.js
