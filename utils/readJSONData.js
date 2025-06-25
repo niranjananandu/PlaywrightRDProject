@@ -1,4 +1,3 @@
-// data/userData.js
 import fs from 'fs';
 
 export function readJSON(path) {

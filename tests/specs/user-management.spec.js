@@ -11,26 +11,28 @@ test.describe.parallel('User Management - Add User', () => {
   test.setTimeout(60000);
 
   users.forEach((testUser) => {
-    test(`should add valid user ${testUser.email} and verify in data grid`,
-      async ({ pageManager }) => {
-
+    test.only(`should add valid user ${testUser.email} and verify in data grid`,
+      async ({ pageManager , logger}) => {
+        
         await expect(pageManager.createUsersPage().logo).toBeVisible();
+        logger.log('Filling form to add user')
         await pageManager.createUsersPage().clickAddUserButton();
         await pageManager.createUsersPage().fillUserForm(testUser);
         await expect(pageManager.createUsersPage().saveChangesButton).toBeEnabled();
         await pageManager.createUsersPage().saveChangesButton.click();
         await expect(pageManager.createUsersPage().toastMessage).toBeVisible({ timeout: 10000 });
+        logger.log('Successfully added user')
         await pageManager.createUsersPage().searchUser(testUser.email);
-        expect(await pageManager.createUsersPage().isUserInGrid(testUser.email)).toBe(username);
-
+        expect(await pageManager.createUsersPage().isUserInGrid(testUser.email)).toBe(username);       
       }
     );
   });
 
   invalidUsers.forEach((invalidTestUser) => {
     test(`Should not be able to add user with invalid data: ${invalidTestUser.testName}`,
-      async ({ pageManager }) => {
+      async ({ pageManager ,logger }) => {
         await expect(pageManager.createUsersPage().logo).toBeVisible();
+        logger.log('Filling form to add user')
         await pageManager.createUsersPage().clickAddUserButton();
         await pageManager.createUsersPage().fillUserForm(invalidTestUser);
         await expect(pageManager.createUsersPage().saveChangesButton).not.toBeEnabled();
