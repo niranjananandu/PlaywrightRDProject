@@ -12,8 +12,6 @@ export function createFolder(title,dir) {
     const fileName = `${safeTitle}_${timestamp}`;
     const newdir = dir + '/' + formatted;
     const fullPath = path.join(newdir, fileName);
-    console.log('newdir: '+newdir)
-    console.log('fullPath: '+fullPath)
     // Create folder if it doesn't exist
     if (!fs.existsSync(newdir)) {
         fs.mkdirSync(newdir, { recursive: true });

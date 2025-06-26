@@ -15,10 +15,9 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@dotenvx/dotenvx": "^1.45.1",
     "@faker-js/faker": "^9.8.0",
     "@playwright/mcp": "^0.0.29",
-    "@playwright/test": "^1.53.0",
+    "@playwright/test": "^1.53.1",
     "@types/node": "^24.0.1",
     "cross-env": "^7.0.3"
   },
