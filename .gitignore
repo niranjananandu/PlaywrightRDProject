@@ -13,4 +13,5 @@ node_modules/
 toDo.js
 /logs
 /allure-results
-/tests/test.js
+/tests/misc
+/accessibilityLogs

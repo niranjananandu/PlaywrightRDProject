@@ -23,7 +23,14 @@ test.describe.parallel('User Management - Add User', () => {
         await expect(pageManager.createUsersPage().toastMessage).toBeVisible({ timeout: 10000 });
         logger.log('Successfully added user')
         await pageManager.createUsersPage().searchUser(testUser.email);
-        expect(await pageManager.createUsersPage().isUserInGrid(testUser.email)).toBe(username);       
+        expect(await pageManager.createUsersPage().isUserInGrid(testUser.email)).toBe(testUser.email);
+        await expect(pageManager.page).toHaveScreenshot(`User_${testUser.email}.png`,
+      {
+        fullPage: true,             
+        timeout: 5000,              
+        animations: 'disabled',     
+        threshold: 0.2
+      })
       }
     );
   });

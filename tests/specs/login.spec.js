@@ -11,7 +11,7 @@ var pageManager;
 test.describe('Login scenarios', () => {
   test.beforeEach(async ({ page }) => {
     pageManager = new PageManager(page);
-    await page.goto(process.env.TEST_URL);
+    await page.goto(decrypt(process.env.TEST_URL));
     if (!process.env.TEST_USERNAME || !process.env.TEST_PASSWORD) {
       throw new Error('Environment variables TEST_USERNAME or TEST_PASSWORD are not set.');
     }
@@ -21,6 +21,15 @@ test.describe('Login scenarios', () => {
     await pageManager.createLoginPage().login(decrypt(process.env.TEST_USERNAME), decrypt(process.env.TEST_PASSWORD));
     await page.waitForURL('**/users');
     await expect(pageManager.createUsersPage().logo).toBeVisible();
+    await expect(page).toHaveScreenshot('UsersPage.png',
+      {
+        fullPage: true,             
+        timeout: 5000,              
+        animations: 'disabled',     
+        threshold: 0.2
+      }
+    );
+
   });
 
   invalidUsers.forEach((invalidUser) => {
