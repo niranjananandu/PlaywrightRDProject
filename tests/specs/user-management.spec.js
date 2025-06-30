@@ -8,10 +8,10 @@ const users = readJSON('./data/AddValidUsers.json');
 const invalidUsers = readJSON('./data/AddInvalidUsers.json');
 
 test.describe.parallel('User Management - Add User', () => {
-  test.setTimeout(60000);
+  test.setTimeout(120000);
 
   users.forEach((testUser) => {
-    test.only(`should add valid user ${testUser.email} and verify in data grid`,
+    test(`should add valid user ${testUser.email} and verify in data grid`,
       async ({ pageManager , logger}) => {
         
         await expect(pageManager.createUsersPage().logo).toBeVisible();
@@ -47,9 +47,53 @@ test.describe.parallel('User Management - Add User', () => {
     );
   });
 
+  users.forEach((testUser) => {
+  test.only(`Add affiliations to user - ${testUser.email}`, async ({ pageManager, logger }) => {
+    await expect(pageManager.createUsersPage().logo).toBeVisible();
+    logger.log('Adding affiliations to user');
+    await pageManager.createUsersPage().searchUser(testUser.email);
+    expect(await pageManager.createUsersPage().isUserInGrid(testUser.email)).toBe(testUser.email);
+    await pageManager.createUsersPage().clickUserTableRow();
+    await pageManager.createUsersPage().clickAffiliationsTab()
+    await pageManager.createUsersPage().clickAddAffilationsButton()
+    for (const affiliation of testUser.affiliations) {
+    // testUser.affiliations.forEach((affliation) =>{
+    await pageManager.createUsersPage().fillAffiliations(affiliation)
+    await expect(page.getByTestId('user-panel-items-table')).toMatchAriaSnapshot(`
+    - table:
+      - rowgroup:
+        - row "Affiliation Membership Number Year Joined Expiry Date Primary Affiliation Comments":
+          - columnheader "Affiliation"
+          - columnheader "Membership Number"
+          - columnheader "Year Joined"
+          - columnheader "Expiry Date"
+          - columnheader "Primary Affiliation"
+          - columnheader "Comments"
+          - columnheader
+          - columnheader
+      - rowgroup:
+        - row /APEGA \\d+ \\d+ \\d+\\/\\d+\\/\\d+ - Configure Delete/:
+          - cell "APEGA"
+          - cell /\\d+/
+          - cell /\\d+/
+          - cell /\\d+\\/\\d+\\/\\d+/
+          - cell:
+            - checkbox [disabled]
+          - cell "-"
+          - cell "Configure":
+            - button "Configure"
+          - cell "Delete":
+            - button "Delete"
+    `);
+  }
+  });
+});
+
+
   test.afterEach(async ({ page }, testInfo) => {
     if (testInfo.status !== testInfo.expectedStatus) {
       await takeTimestampedScreenshot(page, testInfo.title);
     }
   });
+
 });

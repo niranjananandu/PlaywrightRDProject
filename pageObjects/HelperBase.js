@@ -1,6 +1,12 @@
-class HelperBase{
+
+import { CommonLocators } from './CommonLocators';
+
+class HelperBase extends CommonLocators {
     constructor(page) {
-        this.page = page;
+        super(page);
+        if (!page) {  
+      throw new Error('Page object is not initialized');
+    }
     }
 
     async waitForElement(selector) {

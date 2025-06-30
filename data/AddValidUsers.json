@@ -4,13 +4,28 @@
     "firstName": "Playwright",
     "lastName": "TestUser",
     "email": "playwright.testuser@example.com",
-    "role": "Workflow"
+    "role": "Workflow",
+    "affiliations":[{
+    "affiliationName": "APEGA",
+    "membershipNumber": "123456",
+    "yearJoined": "2023", 
+    "expiryDate": "12122029",
+    "primaryAffiliation": true
+    }]
+    
   },
   {
     "title": "Ms",
     "firstName": "Automation",
     "lastName": "User",
     "email": "automation.user@example.com",
-    "role": "System User"
+    "role": "System User",
+    "affiliations":[{
+       "affiliationName": "GSSA",
+    "membershipNumber": "964454",
+    "yearJoined": "2002",
+    "expiryDate": "31032025",
+    "primaryAffiliation": false
+    }]
   }
 ]

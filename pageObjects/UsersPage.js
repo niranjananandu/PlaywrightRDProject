@@ -20,6 +20,15 @@ class UsersPage extends HelperBase {
     this.systemRole = page.locator('div[data-testid="user-role-id-field"]');
     this.toastMessage = page.getByText('Your data has been successfully saved');
     this.menu = page.locator('#menu-')
+    this.userTableRow = page.locator('//tr[contains(@data-testid,"user-table-row")]');
+    this.affiliationsTab =  page.getByTestId('user-panel-tab-tab-item-affiliations')
+    this.addAffiliation =  page.getByTestId('add-affiliation-button-icon')
+    this.affiliationsDropdown = page.getByRole('combobox', { name: 'Affiliation' })
+    this.affiliationsOption = page.getByLabel('APEGA')
+    this.membershipNumberInput = page.getByRole('textbox', { name: 'Membership Number' })
+    this.yearJoinedInput = page.getByRole('textbox', { name: 'Year Joined' })
+    this.expiryDateInput = page.getByRole('textbox', { name: 'Expiry Date' }) 
+    this.primaryAffiliationCheckbox = page.getByRole('checkbox', { name: 'Primary Affiliation' })
   }
 
    getSystemRoleField(text) {
@@ -27,10 +36,12 @@ class UsersPage extends HelperBase {
 }
 
   getUserInGridName(text) {
-    this.userInGridName = `tbody[data-testid="common-table-body"] tr:first-child td:nth-child(5):has-text("${text}")`;
-    return this.userInGridName;
+    return `tbody[data-testid="common-table-body"] tr:first-child td:nth-child(5):has-text("${text}")`;
   } 
 
+  getAffiliationsOption(option){
+    return this.page.getByLabel(option)
+  }
   async clickAddUserButton() {
     await this.addUserButton.click();
   }
@@ -52,7 +63,6 @@ class UsersPage extends HelperBase {
     }
 
     async selectSystemRole(role) {
-        // this.setSystemRoleField(role)
         await this.systemRole.click();
         try{
                  await this.getSystemRoleField(role).click();
@@ -63,7 +73,7 @@ class UsersPage extends HelperBase {
     }
 
     async submitForm() {
-        await this.page.click(this.submitButton);
+        await this.page.click(this.formDialogSubmitButton);
     }
 
     async getErrorMessage() {
@@ -89,7 +99,37 @@ class UsersPage extends HelperBase {
     return cellText.trim();
  }
 
+ async clickUserTableRow() {
+  await this.userTableRow.click();
 
-}
+ }
+
+ async clickAffiliationsTab(){
+  await this.affiliationsTab.click()
+ }
+
+ async clickAddAffilationsButton(){
+  await this.addAffiliation.click()
+ }
+
+  async fillAffiliations(affiliation){    
+    await this.affiliationsDropdown.click()
+    await this.getAffiliationsOption(affiliation.affiliationName).click()
+    await this.membershipNumberInput.fill(affiliation.membershipNumber)
+    await this.yearJoinedInput.fill(affiliation.yearJoined)
+    await this.expiryDateInput.fill(affiliation.expiryDate)
+    if(affiliation.primaryAffiliation){
+        await this.primaryAffiliationsToggle()
+    }         
+    await this.submitForm()
+    }
+
+
+  async primaryAffiliationsToggle(){
+       await this.primaryAffiliationCheckbox.click()
+
+  }
+   
+ }
 
 export { UsersPage };
