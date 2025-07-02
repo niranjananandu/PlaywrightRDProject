@@ -11,7 +11,7 @@ class UsersPage extends HelperBase {
     }
     this.logo = page.getByRole('img', { name: 'Logo' });
     this.addUserButton = page.getByRole('button', { name: 'Add User' });
-    this.saveChangesButton = page.getByRole('button', { name: 'Save Changes' });
+    this.saveChangesButton = page.getByTestId('save-changes');
     this.searchInput = page.getByRole('textbox', { name: 'Search' });
     this.titleInput = page.getByLabel('Title');
     this.firstNameInput = page.getByLabel('First Name');
@@ -27,8 +27,16 @@ class UsersPage extends HelperBase {
     this.affiliationsOption = page.getByLabel('APEGA')
     this.membershipNumberInput = page.getByRole('textbox', { name: 'Membership Number' })
     this.yearJoinedInput = page.getByRole('textbox', { name: 'Year Joined' })
-    this.expiryDateInput = page.getByRole('textbox', { name: 'Expiry Date' }) 
+    this.expiryDate = page.getByTestId("date-to").locator('//div/div/button')
+    this.expiryDateInput = page.getByPlaceholder('DD/MM/YYYY') 
     this.primaryAffiliationCheckbox = page.getByRole('checkbox', { name: 'Primary Affiliation' })
+    this.affiliationDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[1]')
+    this.membershipDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[2]')
+    this.yearJoinedDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[3]')
+    this.expiryDateDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[4]')
+    this.primaryAffiliationDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[5]/span')
+    this.commentsDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[6]')
+    this.affiliationComment = page.getByPlaceholder('Comments')
   }
 
    getSystemRoleField(text) {
@@ -73,7 +81,7 @@ class UsersPage extends HelperBase {
     }
 
     async submitForm() {
-        await this.page.click(this.formDialogSubmitButton);
+        await this.formDialogSubmitButton.click();
     }
 
     async getErrorMessage() {
@@ -117,17 +125,50 @@ class UsersPage extends HelperBase {
     await this.getAffiliationsOption(affiliation.affiliationName).click()
     await this.membershipNumberInput.fill(affiliation.membershipNumber)
     await this.yearJoinedInput.fill(affiliation.yearJoined)
-    await this.expiryDateInput.fill(affiliation.expiryDate)
+    await this.expiryDate.click()
+    await this.selectDate(affiliation.expiryDate)
     if(affiliation.primaryAffiliation){
         await this.primaryAffiliationsToggle()
-    }         
+    }
+    await this.affiliationComment.click()
+    await this.affiliationComment.fill(affiliation.comments)
     await this.submitForm()
     }
 
+    
+
+  async verifyAddedAffiliation(affiliation) {
+    // Fetch actual values from the UI
+    const actualAffiliation = await this.affiliationDataRow.textContent();
+    const actualMembership = await this.membershipDataRow.textContent();
+    const actualYearJoined = await this.yearJoinedDataRow.textContent();
+    const actualExpiryDate = await this.expiryDateDataRow.textContent();
+    const actualComments = await this.commentsDataRow.textContent();
+
+    console.log(actualAffiliation)
+    console.log(actualMembership)
+    console.log(actualYearJoined)
+    console.log(actualExpiryDate)
+    console.log(actualComments)
+    
+
+    // Compare with expected values
+    const match =
+      actualAffiliation === affiliation.affiliationName &&
+      actualMembership === affiliation.membershipNumber &&
+      actualYearJoined === affiliation.yearJoined &&
+      actualExpiryDate === affiliation.expiryDate &&
+      affiliation.comments === '' ? true : actualComments===affiliation.comments;
+
+    return match;
+  }
 
   async primaryAffiliationsToggle(){
        await this.primaryAffiliationCheckbox.click()
 
+  }
+  async clickSaveChanges(){
+    await this.saveChangesButton.click();
   }
    
  }

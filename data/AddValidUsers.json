@@ -5,14 +5,24 @@
     "lastName": "TestUser",
     "email": "playwright.testuser@example.com",
     "role": "Workflow",
-    "affiliations":[{
-    "affiliationName": "APEGA",
-    "membershipNumber": "123456",
-    "yearJoined": "2023", 
-    "expiryDate": "12122029",
-    "primaryAffiliation": true
-    }]
-    
+    "affiliations": [
+      {
+        "affiliationName": "APEGA",
+        "membershipNumber": "123456",
+        "yearJoined": "2023",
+        "expiryDate": "15/08/2027",
+        "primaryAffiliation": true,
+        "comments": ""
+      }
+    ],
+    "qualifications": [
+      {
+        "qualificationName": "",
+        "institution": "",
+        "yearAttained": "",
+        "comments": ""
+      }
+    ]
   },
   {
     "title": "Ms",
@@ -20,12 +30,23 @@
     "lastName": "User",
     "email": "automation.user@example.com",
     "role": "System User",
-    "affiliations":[{
-       "affiliationName": "GSSA",
-    "membershipNumber": "964454",
-    "yearJoined": "2002",
-    "expiryDate": "31032025",
-    "primaryAffiliation": false
-    }]
+    "affiliations": [
+      {
+        "affiliationName": "GSSA",
+        "membershipNumber": "964454",
+        "yearJoined": "2002",
+        "expiryDate": "30/06/2026",
+        "primaryAffiliation": false,
+        "comments": "Automation Comment - Affiliation"
+      }
+    ],
+    "qualifications": [
+      {
+        "qualificationName": "",
+        "institution": "",
+        "yearAttained": "",
+        "comments": ""
+      }
+    ]
   }
 ]
