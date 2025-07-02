@@ -6,7 +6,7 @@ class UsersPage extends HelperBase {
    */
   constructor(page) {
     super(page);
-    if (!page) {  
+    if (!page) {
       throw new Error('Page object is not initialized');
     }
     this.logo = page.getByRole('img', { name: 'Logo' });
@@ -17,81 +17,92 @@ class UsersPage extends HelperBase {
     this.firstNameInput = page.getByLabel('First Name');
     this.lastNameInput = page.getByLabel('Last Name');
     this.emailInput = page.getByLabel('Email');
-    this.systemRole = page.locator('div[data-testid="user-role-id-field"]');
+    this.systemRole = page.getByTestId("user-role-id-field");
     this.toastMessage = page.getByText('Your data has been successfully saved');
     this.menu = page.locator('#menu-')
     this.userTableRow = page.locator('//tr[contains(@data-testid,"user-table-row")]');
-    this.affiliationsTab =  page.getByTestId('user-panel-tab-tab-item-affiliations')
-    this.addAffiliation =  page.getByTestId('add-affiliation-button-icon')
+    //Affiliations
+    this.affiliationsTab = page.getByTestId('user-panel-tab-tab-item-affiliations')
+    this.addAffiliation = page.getByTestId('add-affiliation-button-icon')
     this.affiliationsDropdown = page.getByRole('combobox', { name: 'Affiliation' })
     this.affiliationsOption = page.getByLabel('APEGA')
     this.membershipNumberInput = page.getByRole('textbox', { name: 'Membership Number' })
     this.yearJoinedInput = page.getByRole('textbox', { name: 'Year Joined' })
     this.expiryDate = page.getByTestId("date-to").locator('//div/div/button')
-    this.expiryDateInput = page.getByPlaceholder('DD/MM/YYYY') 
+    this.expiryDateInput = page.getByPlaceholder('DD/MM/YYYY')
     this.primaryAffiliationCheckbox = page.getByRole('checkbox', { name: 'Primary Affiliation' })
-    this.affiliationDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[1]')
-    this.membershipDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[2]')
-    this.yearJoinedDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[3]')
-    this.expiryDateDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[4]')
-    this.primaryAffiliationDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[5]/span')
-    this.commentsDataRow = page.locator('//div[@data-testid="user-panel-container"]//td[6]')
-    this.affiliationComment = page.getByPlaceholder('Comments')
+    this.textboxComment = page.getByPlaceholder('Comments')
+    //Qualifications
+    this.qualificationsTab = page.getByTestId('user-panel-tab-tab-item-qualifications')
+    this.addQualification = page.getByTestId('add-qualification-icon')
+    this.qualificationsDropdown = page.getByRole('combobox', { name: 'Qualification' })
+    this.institutionInput = page.getByRole('textbox', { name: 'Institution' })
+    this.yearAttained = page.getByRole('textbox', { name: 'Year Attained' })
   }
 
-   getSystemRoleField(text) {
-  return this.page.locator(`li[role="option"]:has-text("${text}")`);
-}
+  getSystemRoleField(text) {
+    return this.page.locator(`li[role="option"]:has-text("${text}")`);
+  }
 
   getUserInGridName(text) {
     return `tbody[data-testid="common-table-body"] tr:first-child td:nth-child(5):has-text("${text}")`;
-  } 
+  }
 
-  getAffiliationsOption(option){
+  getOption(option) {
     return this.page.getByLabel(option)
   }
+
+  getAffiliationDataRowByIndex(index) {
+  return this.page.locator(`//div[@data-testid="user-panel-container"]//td[${index}]`);
+}
+
+ getQualificationDataRowByIndex(index) {
+  return this.page.locator(`//tr[contains(@data-testid,"qualification-tab-table-row")]//td[${index}]`);
+}
+
   async clickAddUserButton() {
     await this.addUserButton.click();
   }
-
+  //Fill Add User items
   async fillTitle(title) {
-        await this.titleInput.fill(title);
-    }
-
-    async fillFirstName(firstName) {
-        await this.firstNameInput.fill(firstName);
-    }
-
-    async fillLastName(lastName) {
-        await this.lastNameInput.fill(lastName);
-    }
-
-    async fillEmail(email) {
-        await this.emailInput.fill(email);
-    }
-
-    async selectSystemRole(role) {
-        await this.systemRole.click();
-        try{
-                 await this.getSystemRoleField(role).click();
-        } catch (error) {
-            await this.menu.click();          
-        }
-    
-    }
-
-    async submitForm() {
-        await this.formDialogSubmitButton.click();
-    }
-
-    async getErrorMessage() {
-        return await this.page.textContent(this.errorMessage);
-    }
-  
-  async searchUser(username) {
-    await this.searchInput.fill(username);  
+    await this.titleInput.fill(title);
   }
 
+  async fillFirstName(firstName) {
+    await this.firstNameInput.fill(firstName);
+  }
+
+  async fillLastName(lastName) {
+    await this.lastNameInput.fill(lastName);
+  }
+
+  async fillEmail(email) {
+    await this.emailInput.fill(email);
+  }
+
+  async selectSystemRole(role) {
+    await this.systemRole.click();
+    try {
+      await this.getSystemRoleField(role).click();
+    } catch (error) {
+      await this.menu.click();
+    }
+  }
+
+  async submitForm() {
+    await this.formDialogSubmitButton.click();
+  }
+
+  async getErrorMessage() {
+    return await this.page.textContent(this.errorMessage);
+  }
+
+  //Searching for user in data grid
+  async searchUser(username) {
+    await this.searchInput.fill(username);
+  }
+
+  //Filling user form
   async fillUserForm(user) {
     await this.fillTitle(user.title);
     await this.fillFirstName(user.firstName);
@@ -105,72 +116,113 @@ class UsersPage extends HelperBase {
     const cell = await this.page.waitForSelector(userInGridName);
     const cellText = await cell.textContent();
     return cellText.trim();
- }
+  }
 
- async clickUserTableRow() {
-  await this.userTableRow.click();
+  async clickUserTableRow() {
+    await this.userTableRow.click();
 
- }
+  }
 
- async clickAffiliationsTab(){
-  await this.affiliationsTab.click()
- }
+  async clickAffiliationsTab() {
+    await this.affiliationsTab.click()
+  }
 
- async clickAddAffilationsButton(){
-  await this.addAffiliation.click()
- }
+  async clickQualificationsTab() {
+    await this.qualificationsTab.click()
+  }
 
-  async fillAffiliations(affiliation){    
+  async clickAddAffilationsButton() {
+    await this.addAffiliation.click()
+  }
+
+  async clickAddQualificationsButton() {
+    await this.addQualification.click()
+  }
+
+  async fillAffiliations(affiliation) {
     await this.affiliationsDropdown.click()
-    await this.getAffiliationsOption(affiliation.affiliationName).click()
+    await this.getOption(affiliation.affiliationName).click()
     await this.membershipNumberInput.fill(affiliation.membershipNumber)
     await this.yearJoinedInput.fill(affiliation.yearJoined)
     await this.expiryDate.click()
     await this.selectDate(affiliation.expiryDate)
-    if(affiliation.primaryAffiliation){
-        await this.primaryAffiliationsToggle()
+    if (affiliation.primaryAffiliation) {
+      await this.primaryAffiliationsToggle()
     }
-    await this.affiliationComment.click()
-    await this.affiliationComment.fill(affiliation.comments)
-    await this.submitForm()
-    }
+    await this.textboxComment.click()
+    await this.textboxComment.fill(affiliation.comments)
+  }
 
-    
+  async fillQualifications(qualification) {
+    await this.qualificationsDropdown.click()
+    await this.getOption(qualification.qualificationName).click()
+    await this.institutionInput.fill(qualification.institution)
+    await this.yearAttained.fill(qualification.yearAttained)
+    await this.textboxComment.click()
+    await this.textboxComment.fill(qualification.comments)
+  }
+
+  async verifyTableRow(expected, getDataRowByIndex) {
+    let i=0;
+  for (const [key, value] of Object.entries(expected)) {    
+    i++;
+    if (key === 'comments' && !value) continue;
+    const actual = (await getDataRowByIndex(i).textContent())?.trim();
+    console.log(`Actual: ${actual}`)
+    try{
+      if (actual !== (value || '').trim())return false;
+    }
+    catch(e){
+      continue
+    }
+     
+  }
+  return true;
+}
 
   async verifyAddedAffiliation(affiliation) {
-    // Fetch actual values from the UI
-    const actualAffiliation = await this.affiliationDataRow.textContent();
-    const actualMembership = await this.membershipDataRow.textContent();
-    const actualYearJoined = await this.yearJoinedDataRow.textContent();
-    const actualExpiryDate = await this.expiryDateDataRow.textContent();
-    const actualComments = await this.commentsDataRow.textContent();
 
-    console.log(actualAffiliation)
-    console.log(actualMembership)
-    console.log(actualYearJoined)
-    console.log(actualExpiryDate)
-    console.log(actualComments)
-    
+    return await this.verifyTableRow(affiliation, this.getAffiliationDataRowByIndex.bind(this));
+    // const actualAffiliation = await this.getAffiliationDataRowByIndex(1).textContent();
+    // const actualMembership = await this.getAffiliationDataRowByIndex(2).textContent();
+    // const actualYearJoined = await this.getAffiliationDataRowByIndex(3).textContent();
+    // const actualExpiryDate = await this.getAffiliationDataRowByIndex(4).textContent();
+    // const actualComments = await this.getAffiliationDataRowByIndex(6).textContent();
 
-    // Compare with expected values
-    const match =
-      actualAffiliation === affiliation.affiliationName &&
-      actualMembership === affiliation.membershipNumber &&
-      actualYearJoined === affiliation.yearJoined &&
-      actualExpiryDate === affiliation.expiryDate &&
-      affiliation.comments === '' ? true : actualComments===affiliation.comments;
+    // const match =
+    //   actualAffiliation === affiliation.affiliationName &&
+    //     actualMembership === affiliation.membershipNumber &&
+    //     actualYearJoined === affiliation.yearJoined &&
+    //     actualExpiryDate === affiliation.expiryDate &&
+    //     affiliation.comments === '' ? true : actualComments === affiliation.comments;
 
-    return match;
+    // return match;
   }
 
-  async primaryAffiliationsToggle(){
-       await this.primaryAffiliationCheckbox.click()
+  async verifyAddedQualification(qualification) {
+    return await this.verifyTableRow(qualification, this.getQualificationDataRowByIndex.bind(this));
+    // const actualQualification = await this.getQualificationDataRowByIndex(1).textContent();
+    // const actualInstitution = await this.getQualificationDataRowByIndex(2).textContent();
+    // const actualYearAttained = await this.getQualificationDataRowByIndex(3).textContent();
+    // const actualComments = await this.getQualificationDataRowByIndex(4).textContent();
+
+    // const match =
+    //   actualQualification === qualification.qualificationName &&
+    //     actualInstitution === qualification.institution &&
+    //     actualYearAttained === qualification.yearAttained &&
+    //     qualification.comments === '' ? true : actualComments === qualification.comments;
+
+    // return match;
+  }
+
+  async primaryAffiliationsToggle() {
+    await this.primaryAffiliationCheckbox.click()
 
   }
-  async clickSaveChanges(){
+  async clickSaveChanges() {
     await this.saveChangesButton.click();
   }
-   
- }
+
+}
 
 export { UsersPage };

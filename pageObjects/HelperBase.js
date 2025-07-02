@@ -20,8 +20,10 @@ class HelperBase extends CommonLocators {
         if (!page) {
             throw new Error('Page object is not initialized');
         }
+    }
 
-
+    async clickElement(selector){
+        await selector.click()
     }
 
     async waitForElement(selector) {
@@ -37,39 +39,28 @@ class HelperBase extends CommonLocators {
 
     async selectDate(date) {
         const [day, month, year] = date.split('/');
-        console.log(`Expected Day: ${day}, Month: ${month}, Year: ${year}`)
-        this.year = this.page.locator(`//button[contains(@class,'MuiPickersYear') and text()="${year}"]`);
+        const yearBtn = this.page.locator(`//button[contains(@class,'MuiPickersYear') and text()="${year}"]`);
         const label = this.page.locator('.MuiPickersCalendarHeader-label');
-        this.previousMonth = this.page.getByLabel('Previous month')
-        this.nextMonth = this.page.getByLabel('Next month')
-        this.date = this.page.getByRole('gridcell', { name: `${day}` }).first()
+        const prevMonthBtn = this.page.getByLabel('Previous month');
+        const nextMonthBtn = this.page.getByLabel('Next month');
+        const dayBtn = this.page.getByRole('gridcell', { name: `${day}` }).first();
 
-        await this.year.click();
-        const text = await label.textContent();
-        const [currentMonth, currentYear] = text.split(' ')
-        console.log("Current Month: "+ currentMonth)
-        console.log("Current Year: "+ currentYear)
-        const expectedMonth = Number(month)
-        const currentMonthNum = this.getMonthNumber(currentMonth)
-
-        const diff = expectedMonth - currentMonthNum
-        const absDiff = Math.abs(expectedMonth - currentMonthNum)
-        if (diff<0){
-            for(let i = 0; i< absDiff;i++){
-                await this.previousMonth.click()
-            }
+        await yearBtn.click();
+        const [currentMonth] = (await label.textContent()).split(' ');
+        const expectedMonth = Number(month);
+        const currentMonthNum = this.getMonthNumber(currentMonth);
+        const diff = expectedMonth - currentMonthNum;
+        const navBtn = diff < 0 ? prevMonthBtn : nextMonthBtn;
+        for (let i = 0; i < Math.abs(diff); i++) {
+            await navBtn.click();
         }
-
-        else if(diff>0){
-             for(let i = 0; i< absDiff;i++){
-                await this.nextMonth.click()
-            }
-        }
-
+        await dayBtn.click();
+    }
         
-        await this.date.click();          
-
-        }     
+    async selectYear(year){
+        this.year = this.page.locator(`//button[contains(@class,'MuiPickersYear') and text()="${year}"]`);
+        await this.year.click();
+    }
     
     async waitForDataSuccessfullySavedToast(){
         await this.dataSuccessfullySaved.waitFor({ state: 'visible' });

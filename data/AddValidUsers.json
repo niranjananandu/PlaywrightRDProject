@@ -17,10 +17,10 @@
     ],
     "qualifications": [
       {
-        "qualificationName": "",
-        "institution": "",
-        "yearAttained": "",
-        "comments": ""
+        "qualificationName": "Bachelor of Engineering (Chemical)",
+        "institution": "University of Automated Testing",
+        "yearAttained": "2019",
+        "comments": "Valid Qualification"
       }
     ]
   },
@@ -42,9 +42,9 @@
     ],
     "qualifications": [
       {
-        "qualificationName": "",
-        "institution": "",
-        "yearAttained": "",
+        "qualificationName": "Bachelor of Engineering (Geological Engineering)",
+        "institution": "University of Automated Testing",
+        "yearAttained": "2013",
         "comments": ""
       }
     ]
