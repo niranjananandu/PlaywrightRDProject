@@ -13,7 +13,11 @@ function createLogger(testName = 'default') {
     log: (message) => {
       const timestamp = new Date().toISOString();
       const entry = `[${timestamp}] ${message}\n`;
-      fs.appendFileSync(fullPath, entry);
+      fs.appendFile(fullPath, entry, (err) => {
+        if (err) {
+          console.error('Failed to write log:', err);
+        }
+      });
       console.log(entry.trim());
     }
   };

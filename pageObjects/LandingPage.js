@@ -9,6 +9,7 @@ class LandingPage extends HelperBase{
     if (!page) {  
       throw new Error('Page object is not initialized');
     }
+    
     this.toggleDrawerButton = page.getByRole('button', { name: 'Toggle Drawer' });
     this.dashboardLink = page.getByRole('link', { name: 'Dashboard' });
     this.dashboardHeading = page.getByRole('heading', { name: 'Dashboard' });

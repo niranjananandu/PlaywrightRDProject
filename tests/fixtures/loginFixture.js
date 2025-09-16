@@ -23,4 +23,4 @@ export const test = base.extend({
     // Provide the page in logged-in state to the test
     await use(pageManager);
   }
-});
+}); 

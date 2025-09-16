@@ -33,8 +33,9 @@ class HelperBase extends CommonLocators {
         await this.page.waitForTimeout(numberOfSeconds * 1000);
     }
 
-    async getElementText(selector) {
+    async getElementText(selector) {    
         return await this.page.textContent(selector);
+      
     }
 
     async selectDate(date) {
